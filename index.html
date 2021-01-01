@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Rus Cities</title>
+</head>
+
+<body>
+
+
+    <script>
+        const endpoint = 'https://github.com/pensnarik/russian-cities/blob/master/russian-cities.json'
+
+        const cities = [];
+
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => cities.push(...data))
+
+    </script>
+</body>
+
+</html>
