@@ -5,10 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajax Rus Cities</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
+    <form class="search-form">
+        <input type="text" class="search" placeholder="City or Subject">
+        <ul class="suggestions">
+            <li>Filter for a City</li>
+            <li>or a Subject of Federation</li>
+        </ul>
+    </form>
 
     <script>
         const endpoint = 'https://github.com/pensnarik/russian-cities/blob/master/russian-cities.json'
@@ -17,7 +24,35 @@
 
         fetch(endpoint)
             .then(response => response.json())
-            .then(data => cities.push(...data))
+            .then(data => cities.push(...data));
+
+        function findMatches(wordToMatch, cities) {
+            return cities.filter(place => {
+                //here we need to figure out if the city or state matches what was searched
+                const regex = new RegExp(wordToMatch, 'gi'); // 'gi' is flag, 'g' stands for global, 'i' for case insensitive
+                return place.name.match(regex) || place.subject.match(regex)
+            });
+        }
+
+        function displayMatches() {
+            const matchArray = findMatches(this.value, cities);
+            const html = matchArray.map(place => {
+                return `
+                        <li>
+                            <span class="city">${place.name}, ${place.subject}</span>
+                            <span class="population">${place.population}</span>    
+                        </li>
+                        `;
+            }).join('');
+        }
+        suggestions.innerHTML = html;
+
+        const searchInput = document.querySelector('.search');
+        const suggestions = document.querySelector('.suggestions');
+
+        searchInput.addEventListener('change', displayMatches);
+        searchInput.addEventListener('keyup', displayMatches);
+
 
     </script>
 </body>
