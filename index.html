@@ -10,15 +10,15 @@
 
 <body>
     <form class="search-form">
-        <input type="text" class="search" placeholder="City or Subject">
+        <input type="text" class="search" placeholder="Город или Регион">
         <ul class="suggestions">
-            <li>Filter for a City</li>
-            <li>or a Subject of Federation</li>
+            <li>отфильтровать по городу</li>
+            <li>или региону</li>
         </ul>
     </form>
 
     <script>
-        const endpoint = 'https://github.com/pensnarik/russian-cities/blob/master/russian-cities.json'
+        const endpoint = 'https://gist.githubusercontent.com/gorborukov/0722a93c35dfba96337b/raw/435b297ac6d90d13a68935e1ec7a69a225969e58/russia'
 
         const cities = [];
 
@@ -30,7 +30,7 @@
             return cities.filter(place => {
                 //here we need to figure out if the city or state matches what was searched
                 const regex = new RegExp(wordToMatch, 'gi'); // 'gi' is flag, 'g' stands for global, 'i' for case insensitive
-                return place.name.match(regex) || place.subject.match(regex)
+                return place.city.match(regex) || place.region.match(regex)
             });
         }
 
@@ -39,16 +39,16 @@
             const html = matchArray.map(place => {
                 return `
                         <li>
-                            <span class="city">${place.name}, ${place.subject}</span>
-                            <span class="population">${place.population}</span>    
+                            <span class="city">${place.city}, ${place.region}</span>   
                         </li>
                         `;
             }).join('');
+            suggestions.innerHTML = html;
         }
-        suggestions.innerHTML = html;
 
         const searchInput = document.querySelector('.search');
         const suggestions = document.querySelector('.suggestions');
+
 
         searchInput.addEventListener('change', displayMatches);
         searchInput.addEventListener('keyup', displayMatches);
